@@ -13,6 +13,7 @@
         android:layout_height="83dp"
         android:layout_marginStart="48dp"
         android:layout_marginBottom="72dp"
+        android:onClick="onStartLocationButton"
         android:text="@string/start_button_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -23,6 +24,7 @@
         android:layout_height="83dp"
         android:layout_marginStart="204dp"
         android:layout_marginBottom="72dp"
+        android:onClick="onStopLocationButton"
         android:text="@string/stop_location_services"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -31,95 +33,62 @@
         android:id="@+id/tv_counter"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="464dp"
-        android:layout_marginBottom="9dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/counter"
         app:layout_constraintBottom_toTopOf="@+id/tv_latitude"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.31"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_latitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="492dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/latitude"
         app:layout_constraintBottom_toTopOf="@+id/tv_longitude"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.313"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_altitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="544dp"
-        android:layout_marginBottom="5dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="12dp"
         android:text="@string/altitude"
         app:layout_constraintBottom_toTopOf="@+id/b_getLocation"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.308"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/tv_longitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="516dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/longitude"
         app:layout_constraintBottom_toTopOf="@+id/tv_altitude"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.32"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/b_toMap"
         android:layout_width="165dp"
         android:layout_height="49dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="240dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="20dp"
+        android:onClick="onMapClick"
         android:text="@string/to_map"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/tv_counter"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <RadioGroup
-        android:id="@+id/rg_chooseRoute"
+    <Button
+        android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="68dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="28dp"
+        android:onClick="goToShowAllHikes"
+        android:text="To Hike List"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <RadioButton
-            android:id="@+id/radio_one"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="true"
-            android:tag="route1"
-            android:text="Cactus To The Gym" />
-
-        <RadioButton
-            android:id="@+id/radio_two"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:tag="route2"
-            android:text="Tech Building To The Grove" />
-
-        <RadioButton
-            android:id="@+id/radio_three"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:tag="route3"
-            android:text="Main Entrance Adventure" />
-    </RadioGroup>
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
