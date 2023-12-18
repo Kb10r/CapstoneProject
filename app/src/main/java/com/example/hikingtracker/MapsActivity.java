@@ -50,7 +50,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /**
      * runs when the activity is loaded
-     * Binds the map, gets extras from the passed in intent Bundle
+     * Binds the map to the view, gets extras from the passed in intent Bundle
      * Starts the SupportMapFragment Async loading the map
      * @param savedInstanceState
      */
@@ -58,12 +58,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //setting the view and the binding for use by the Map fragment
         binding = ActivityMapsBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         context = this;
 
+        //get Location data and firstRun from MainActivity
         Bundle extras = getIntent().getExtras();
-
         listOfLoc = extras.getParcelableArrayList("latLngArr");
         firstRun = extras.getBoolean("firstRun");
 
@@ -72,7 +73,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
 
     }
 
@@ -102,7 +102,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //moves the camera to the starting point and zooms in
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(firstLatLng, 17));
 
-        /**
+        /*
          * This callback is a little weird, before using this all screenshots (dynamically) were black
          * screens because the map wasn't loaded yet
          */
@@ -156,12 +156,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * @param context
      */
     public static void printImageFileNames(Context context) {
+        //Items passed to the Cursor to find the images
         ContentResolver contentResolver = context.getContentResolver();
         Uri imageUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
-
         String[] projection = {MediaStore.Images.Media.DISPLAY_NAME};
         String selection = MediaStore.Images.Media.DISPLAY_NAME + " LIKE 'HikingTracker_%'";
 
+        //This is like setting up a SQL query
         Cursor cursor = contentResolver.query(
                 imageUri,
                 projection,
@@ -169,7 +170,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 null,
                 null
         );
-
         if (cursor != null) {
             try {
                 int displayNameColumnIndex = cursor.getColumnIndex(MediaStore.Images.Media.DISPLAY_NAME);
@@ -189,18 +189,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * We use the newer MediaStore API
      * in the future I will add a function for the lower Android versions that uses older file manipulation
      * to save the bitmap
-     * @param bitmap
+     * @param bitmap to save
      */
     public void saveScreenshot(Bitmap bitmap) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            //Log.d("HikingDev", Build.VERSION.SDK_INT + "");
-            //Log.d("HikingDev", "Q OR HIGHER");
+            /*
+            Log.d("HikingDev", Build.VERSION.SDK_INT + "");
+            Log.d("HikingDev", "Q OR HIGHER");
+            */
             saveBitmapToMediaStoreQ(bitmap);
             printImageFileNames(this);
         } else {
             //Log.d("HikingDev", "LOWER THAN Q");
-            // For devices running below Android Q, you can use the traditional file saving approach
-            // For example: saveBitmapToFile(bitmap);
+            // For devices running below Android Q, you have to use use the traditional file saving approach
+            // saveBitmapToFile(bitmap);
         }
     }
 
@@ -213,6 +215,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         ContentResolver resolver = context.getContentResolver();
         ContentValues contentValues = new ContentValues();
+        //named thus so we can find it later and associate it with the SharedPreferences
         String imageName = "HikingTracker_" + new SimpleDateFormat(("yyyyMMdd_HHmmss"), Locale.getDefault()).format(new Date());
         contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, imageName);
         contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/png");

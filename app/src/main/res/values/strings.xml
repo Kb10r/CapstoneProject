@@ -8,4 +8,5 @@
     <string name="start_button_text">Start Location Recording</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="to_map">To Map</string>
+    <string name="to_hikes">To Hike List</string>
 </resources>

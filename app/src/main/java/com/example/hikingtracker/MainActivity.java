@@ -85,9 +85,11 @@ public class MainActivity extends AppCompatActivity {
         b_stopLocation = findViewById(R.id.b_stopLocation);
         b_toMap = findViewById(R.id.b_toMap);
 
-        //We need to be sure that the application has access to the location and storage permissions
-        checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, FINE_LOCATION_CODE);
-        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE);
+
+        //We need to be sure that the application has access to the location and storage permissions and if not we need to request them
+        String[] permissions = {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_EXTERNAL_STORAGE};
+        int[] requestCodes = {FINE_LOCATION_CODE, READ_EXTERNAL_STORAGE};
+        checkPermission(permissions, requestCodes);
 
         //Instantiating some variables
         preferences = getSharedPreferences("ListOfHikes", Context.MODE_PRIVATE);
@@ -117,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         and if they aren't connected to an image it will be deleted
         */
         //clearPrefs();
-        Log.d("HikingDev", "PrefList At Start: " + preferences.getAll().toString());
+        Log.d("HikingDev", "ListOfHikes At Start: " + preferences.getAll().toString());
     }
 
     /**
@@ -137,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
     public void onStopLocationButton(View view) {
         fusedLocationClient.removeLocationUpdates(locationCallback);
     }
+
     /**
      * Map Button:
      * Sends collected data to the MapsActivity
@@ -147,14 +150,18 @@ public class MainActivity extends AppCompatActivity {
         if (numLoc == 0) {
             b_getLocation.callOnClick();
         } else {
+            //iterate through trackedLoations
             for (Location loc : trackedLocations) {
+                //Translate to LatLng which is a pairing of two Doubles
                 trackedLatLngs.add(new LatLng(loc.getLatitude(), loc.getLongitude()));
             }
+            //Sending the latlngs to the MapsActivity
             Intent intent = new Intent(view.getContext(), MapsActivity.class);
             intent.putParcelableArrayListExtra("latLngArr",trackedLatLngs);
             intent.putExtra("firstRun", firstRun);
             firstRun = false;
 
+            //Start MapsActivity
             view.getContext().startActivity(intent);
         }
     }
@@ -238,16 +245,19 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * Needed to see if we have necessary permissions from the user, will ask for said permissions if we don't have it
-     * @param permission what to ask the user about
-     * @param requestCode unique code for each permission
+     * @param permissions list of what to ask the user about
+     * @param requestCodes unique codes for each permission
      */
-    public void checkPermission(String permission, int requestCode){
-        if(ContextCompat.checkSelfPermission(MainActivity.this, permission) == PackageManager.PERMISSION_DENIED){
-            ActivityCompat.requestPermissions(MainActivity.this, new String[] { permission }, requestCode);
-        } else {
-            //Toast.makeText(MainActivity.this, "This Permission: " + permission + " is already granted!", Toast.LENGTH_SHORT).show();
+    public void checkPermission(String[] permissions, int[] requestCodes){
+        for (int i = 0; i <= permissions.length -1; i++) {
+            String permission = permissions[i];
+            int requestCode = 100;
+            if (ContextCompat.checkSelfPermission(MainActivity.this, permission) == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(MainActivity.this, permissions, requestCode);
+            } else {
+                //Toast.makeText(MainActivity.this, "This Permission: " + permission + " is already granted!", Toast.LENGTH_SHORT).show();
+            }
         }
-
     }
 
     /**
